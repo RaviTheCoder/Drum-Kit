@@ -58,7 +58,33 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+ function playSound(e) {
+  // select audio (to play sound) and key (to add transition)
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  const key = document.querySelector(`key[data-key="${e.keyCode}"]`);
+  // if key hit is not one of the asdfghjkl keys, then return nothing
+  if (!audio) return;
+  // add class 'playing' to selected key
+  key.classList.add('playing');
+  // reset audio clip to 0 so that we can hit the key multiple times
+  audio.currentTime = 0;
+  // play audio 
+  audio.play();
+ }
 
+ function removeTransition(e) {
+  // we're looking for the particular transition of transform
+  if (e.propertyName !== 'transform') return;
+  // remove the class 'playing' from key
+  e.target.classList.remove('playing');
+ }
+
+ // select all keys in a node list
+ const keys = document.querySelectorAll('.key');
+ // for each key in the node list, add event listener looking for transitionend and apply removeTransition()
+ keys.forEach(key => key.addEventListener('transitionend'. removeTransition));
+ // when key is hit, playSound()
+ window.addEventListener('keydown', playSound);
 </script>
 
 
